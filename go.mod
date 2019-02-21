@@ -1,4 +1,4 @@
-module github.com/XiaYinchang/go-keystone
+module github.com/XiaYinchang/keystone-go-sdk
 
 require (
 	github.com/markstgodard/go-keystone v0.0.0-20161118174516-0ecc56d92a9e

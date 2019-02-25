@@ -2,8 +2,6 @@ package keystone
 
 import (
 	"bytes"
-	"encoding/json"
-	"errors"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -37,7 +35,10 @@ func (c *Client) DoRequest(r KeyRequest) (KeyResponse, error) {
 		return KeyResponse{}, err
 	}
 	req.Header.Set("Content-Type", "application/json")
-	req.Header.Set(X_SUBJECT_TOKEN_HEADER, c.AuthInfo.Token)
+	req.Header.Set(X_AUTH_TOKEN, c.AuthInfo.Token)
+	for key, value := range r.Headers {
+		req.Header.Set(key, value)
+	}
 
 	resp, err := client.Do(req)
 	if err != nil {
@@ -88,37 +89,4 @@ func (c *Client) doRequest(r KeyRequest) (KeyResponse, error) {
 		Body:       body,
 		StatusCode: resp.StatusCode,
 		Headers:    resp.Header}, nil
-}
-
-func (c *Client) Tokens(auth Auth) (string, string, error) {
-	jsonStr, err := json.Marshal(SingleAuth{Auth: auth})
-	if err != nil {
-		return "", "", fmt.Errorf("invalid auth request: ", err)
-	}
-
-	resp, err := c.doRequest(KeyRequest{
-		URL:          fmt.Sprintf("%s/v3/auth/tokens", c.AuthInfo.AuthURL),
-		Method:       http.MethodPost,
-		Body:         jsonStr,
-		OkStatusCode: http.StatusCreated,
-	})
-
-	if err != nil {
-		return "", "", err
-	}
-
-	// note: not unmarshalling response body right now
-	// since dont need anything from it yet
-	token := resp.Headers.Get(X_SUBJECT_TOKEN_HEADER)
-	if token == "" {
-		return "", "", errors.New("No token found in response")
-	}
-	var keyTokenBody ResTokenBody
-	err = json.Unmarshal(resp.Body, &keyTokenBody)
-
-	if err != nil {
-		return "", "", err
-	}
-
-	return token, keyTokenBody.Token.User.Id, nil
 }

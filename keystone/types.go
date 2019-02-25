@@ -5,6 +5,7 @@ import (
 )
 
 const X_SUBJECT_TOKEN_HEADER = "X-Subject-Token"
+const X_AUTH_TOKEN = "X-Auth-Token"
 
 type KeystoneAuth struct {
 	AuthURL     string
@@ -60,6 +61,7 @@ type ResUser struct {
 type KeyRequest struct {
 	URL          string
 	Method       string
+	Headers      map[string]string
 	Body         []byte
 	OkStatusCode int
 }

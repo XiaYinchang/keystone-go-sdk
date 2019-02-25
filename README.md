@@ -4,14 +4,17 @@ Go library for Keystone v3.0 API
 
 ### Installation
 
-Install using `go get github.com/XiaYinchang/go-keystone`.
+Install using `go get github.com/XiaYinchang/keystone-go-sdk`.
 
 
 ### Usage
 
 ```go
+// import package
+import "github.com/XiaYinchang/keystone-go-sdk/keystone"
+
 // create new client
-authInfo := KeystoneAuth {
+authInfo := keystone.KeystoneAuth {
     AuthURL:     "http://192.168.56.101:5000",
 	APIVersion:  "v3",
 	DomainName:  "Default",

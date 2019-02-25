@@ -7,7 +7,7 @@ import (
 	"net/http"
 )
 
-func (c *Client) validateToken(token string) (*ResTokenBody, error) {
+func (c *Client) ValidateToken(token string) (*ResTokenBody, error) {
 	resp, err := c.DoRequest(KeyRequest{
 		URL:          "/v3/auth/tokens",
 		Method:       http.MethodGet,

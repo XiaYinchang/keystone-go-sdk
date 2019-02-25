@@ -27,6 +27,20 @@ func NewClient(authInfo KeystoneAuth) (*Client, error) {
 	return &client, nil
 }
 
+func NewClientWithToken(authInfo KeystoneAuth) (*Client, error) {
+	if authInfo.Token == "" {
+		return nil, fmt.Errorf("missing token")
+	}
+	client := Client{AuthInfo: &authInfo}
+	token, err := client.ValidateToken(authInfo.Token)
+	if err != nil {
+		return nil, err
+	}
+	client.AuthInfo.UserId = token.Token.User.Id
+	client.AuthInfo.UserName = token.Token.User.Name
+	return &client, nil
+}
+
 func (c *Client) DoRequest(r KeyRequest) (KeyResponse, error) {
 	client := &http.Client{}
 

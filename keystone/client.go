@@ -11,12 +11,12 @@ type Client struct {
 	AuthInfo *KeystoneAuth
 }
 
-func NewClient(authInfo KeystoneAuth) (*Client, error) {
+func NewClient(authInfo *KeystoneAuth) (*Client, error) {
 
 	if authInfo.AuthURL == "" {
 		return nil, fmt.Errorf("missing URL")
 	}
-	client := Client{AuthInfo: &authInfo}
+	client := Client{AuthInfo: authInfo}
 	auth := NewAuth(authInfo.UserName, authInfo.Password, authInfo.DomainName)
 	token, userid, err := client.Tokens(auth)
 	if err != nil {
@@ -27,11 +27,11 @@ func NewClient(authInfo KeystoneAuth) (*Client, error) {
 	return &client, nil
 }
 
-func NewClientWithToken(authInfo KeystoneAuth) (*Client, error) {
+func NewClientWithToken(authInfo *KeystoneAuth) (*Client, error) {
 	if authInfo.Token == "" {
 		return nil, fmt.Errorf("missing token")
 	}
-	client := Client{AuthInfo: &authInfo}
+	client := Client{AuthInfo: authInfo}
 	token, err := client.ValidateToken(authInfo.Token)
 	if err != nil {
 		return nil, err

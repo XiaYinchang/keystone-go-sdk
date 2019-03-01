@@ -72,9 +72,13 @@ type KeyResponse struct {
 	Headers    http.Header
 }
 
-type ResProjectBody struct {
+type ResProjectsBody struct {
 	Projects []ResProject `json:"projects"`
 	Links    ResLinks     `json:links`
+}
+
+type ResProjectBody struct {
+	Project ResProject `json:"project"`
 }
 
 type ResProject struct {

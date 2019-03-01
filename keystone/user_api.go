@@ -5,7 +5,7 @@ import (
 	"net/http"
 )
 
-func (c *Client) UserProjects(userid string) (*ResProjectBody, error) {
+func (c *Client) UserProjects(userid string) (*ResProjectsBody, error) {
 	resp, err := c.DoRequest(KeyRequest{
 		URL:          "/v3/users/" + userid + "/projects",
 		Method:       http.MethodGet,
@@ -14,11 +14,11 @@ func (c *Client) UserProjects(userid string) (*ResProjectBody, error) {
 	if err != nil {
 		return nil, err
 	}
-	var resProjectBody ResProjectBody
-	err = json.Unmarshal(resp.Body, &resProjectBody)
+	var resProjectsBody ResProjectsBody
+	err = json.Unmarshal(resp.Body, &resProjectsBody)
 
 	if err != nil {
 		return nil, err
 	}
-	return &resProjectBody, nil
+	return &resProjectsBody, nil
 }

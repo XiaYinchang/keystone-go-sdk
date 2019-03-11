@@ -58,6 +58,10 @@ type ResUser struct {
 	Name string `json:"name"`
 }
 
+type ReqUser struct {
+	UserInfo User `json:"user"`
+}
+
 type KeyRequest struct {
 	URL          string
 	Method       string
@@ -74,7 +78,7 @@ type KeyResponse struct {
 
 type ResProjectsBody struct {
 	Projects []ResProject `json:"projects"`
-	Links    ResLinks     `json:links`
+	Links    ResLinks     `json:"links"`
 }
 
 type ResProjectBody struct {
@@ -89,6 +93,33 @@ type ResProject struct {
 	Links       ResLinks `json:"links"`
 	Name        string   `json:"name"`
 	ParentId    string   `json:"parent_id"`
+}
+
+type Project struct {
+	Name string `json:"name"`
+}
+
+type ReqProject struct {
+	ProjectInfo Project  `json:"project"`
+}
+
+type ResUsersBody struct {
+	Users []ResUser `json:"users"`
+	Links ResLinks  `json:"links"`
+}
+
+type ResUserBody struct {
+	User ResUser `json:"user"`
+}
+
+type ResRole struct {
+	Name string `json:"name"`
+	Id string `json:"id"`
+}
+
+type ResRolesBody struct {
+	Roles []ResRole `json:"roles"`
+	Links ResLinks  `json:"links"`
 }
 
 type ResLinks []map[string]string

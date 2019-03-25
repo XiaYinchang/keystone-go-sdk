@@ -44,6 +44,24 @@ func (c *Client) GetUserByName(userName string) (*ResUser, error) {
 	return &(resUsersBody.Users[0]), nil
 }
 
+func (c *Client) ListUsers() ([]ResUser, error) {
+	resp, err := c.DoRequest(KeyRequest{
+		URL:          "/v3/users",
+		Method:       http.MethodGet,
+		OkStatusCode: http.StatusOK,
+	})
+	if err != nil {
+		return nil, err
+	}
+	var resUsersBody ResUsersBody
+	err = json.Unmarshal(resp.Body, &resUsersBody)
+
+	if err != nil {
+		return nil, err
+	}
+	return resUsersBody.Users, nil
+}
+
 func (c *Client) CreateUser(name, password string) error {
 	bodyByteArray, err := json.Marshal(&ReqUser{
 		UserInfo: User{

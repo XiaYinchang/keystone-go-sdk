@@ -17,3 +17,28 @@ func NewAuth(username, password, domainName string) Auth {
 		},
 	}
 }
+
+func NewSystemAuth(username, password, domainName string) SystemScopedAuth {
+	// create a password-based auth
+	return SystemScopedAuth{
+		Auth: SysAuth{
+			Identity: Identity{
+				Methods: []string{"password"},
+				Password: IdentityUser{
+					User: User{
+						Name:     username,
+						Password: password,
+						Domain: Domain{
+							Name: domainName,
+						},
+					},
+				},
+			},
+			Scope: Scope{
+				System: System{
+					All: true,
+				},
+			},
+		},
+	}
+}

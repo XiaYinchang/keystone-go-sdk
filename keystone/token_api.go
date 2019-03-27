@@ -28,8 +28,8 @@ func (c *Client) ValidateToken(token string) (*ResTokenBody, error) {
 }
 
 //Tokens issue keystone token
-func (c *Client) Tokens(auth Auth) (string, string, error) {
-	jsonStr, err := json.Marshal(SingleAuth{Auth: auth})
+func (c *Client) Tokens(auth interface{}) (string, string, error) {
+	jsonStr, err := json.Marshal(auth)
 	if err != nil {
 		return "", "", fmt.Errorf("invalid auth request: %s", err)
 	}

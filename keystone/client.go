@@ -17,7 +17,12 @@ func NewClient(authInfo *KeystoneAuth) (*Client, error) {
 		return nil, fmt.Errorf("missing URL")
 	}
 	client := Client{AuthInfo: authInfo}
-	auth := NewAuth(authInfo.UserName, authInfo.Password, authInfo.DomainName)
+	var auth interface{}
+	if authInfo.UserName == "admin" {
+		auth = NewSystemAuth(authInfo.UserName, authInfo.Password, authInfo.DomainName)
+	} else {
+		auth = SingleAuth{Auth: NewAuth(authInfo.UserName, authInfo.Password, authInfo.DomainName)}
+	}
 	token, userid, err := client.Tokens(auth)
 	if err != nil {
 		return nil, fmt.Errorf("get token error")

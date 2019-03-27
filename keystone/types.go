@@ -45,6 +45,23 @@ type SingleAuth struct {
 	Auth Auth `json:"auth"`
 }
 
+type SystemScopedAuth struct {
+	Auth SysAuth `json:"auth"`
+}
+
+type SysAuth struct {
+	Identity Identity `json:"identity"`
+	Scope Scope `json:"scope"`
+}
+
+type Scope struct {
+	System System `json:"system"`
+}
+
+type System struct {
+	All bool `json:"all"`
+}
+
 type ResTokenBody struct {
 	Token ResToken `json:"token"`
 }
@@ -100,7 +117,7 @@ type Project struct {
 }
 
 type ReqProject struct {
-	ProjectInfo Project  `json:"project"`
+	ProjectInfo Project `json:"project"`
 }
 
 type ResUsersBody struct {
@@ -114,7 +131,7 @@ type ResUserBody struct {
 
 type ResRole struct {
 	Name string `json:"name"`
-	Id string `json:"id"`
+	Id   string `json:"id"`
 }
 
 type ResRolesBody struct {

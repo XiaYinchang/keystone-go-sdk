@@ -139,4 +139,4 @@ type ResRolesBody struct {
 	Links ResLinks  `json:"links"`
 }
 
-type ResLinks []map[string]string
+type ResLinks map[string]string

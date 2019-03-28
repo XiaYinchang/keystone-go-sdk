@@ -44,6 +44,27 @@ func (c *Client) GetProjectByName(projectName string) (*ResProject, error) {
 	return &(resProjectsBody.Projects[0]), nil
 }
 
+func (c *Client) CheckProjectExist(projectName string) (bool, error) {
+	resp, err := c.DoRequest(KeyRequest{
+		URL:          "/v3/projects?name=" + projectName,
+		Method:       http.MethodGet,
+		OkStatusCode: http.StatusOK,
+	})
+	if err != nil {
+		return true, err
+	}
+	var resProjectsBody ResProjectsBody
+	err = json.Unmarshal(resp.Body, &resProjectsBody)
+
+	if err != nil {
+		return true, err
+	}
+	if len(resProjectsBody.Projects) <= 0 {
+		return false, nil
+	}
+	return true, nil
+}
+
 func (c *Client) CreateProject(userName, projectName string) error {
 	reqProjectBodyArray, err := json.Marshal(&ReqProject{
 		ProjectInfo: Project{

@@ -7,7 +7,7 @@ import (
 
 func (c *Client) GetRoleByName(roleName string) (*ResRole, error) {
 	resp, err := c.DoRequest(KeyRequest{
-		URL:          "/v3/roles?name="+roleName,
+		URL:          "/v3/roles?name=" + roleName,
 		Method:       http.MethodGet,
 		OkStatusCode: http.StatusOK,
 	})
@@ -20,19 +20,19 @@ func (c *Client) GetRoleByName(roleName string) (*ResRole, error) {
 	if err != nil {
 		return nil, err
 	}
-	if len(resRolesBody.Roles)<=0 {
+	if len(resRolesBody.Roles) <= 0 {
 		return nil, err
 	}
 	return &(resRolesBody.Roles[0]), nil
 }
 
-func (c *Client) AssignRoleToUserOnProject(roleName, userName, projectName string) ( error) {
+func (c *Client) AssignRoleToUserOnProject(roleName, userName, projectName string) error {
 	roleInfo, err := c.GetRoleByName(roleName)
-		if err != nil {
+	if err != nil {
 		return err
 	}
 	userInfo, err := c.GetUserByName(userName)
-		if err != nil {
+	if err != nil {
 		return err
 	}
 	projectInfo, err := c.GetProjectByName(projectName)
@@ -40,7 +40,7 @@ func (c *Client) AssignRoleToUserOnProject(roleName, userName, projectName strin
 		return err
 	}
 	_, err = c.DoRequest(KeyRequest{
-		URL:          "/v3/projects/" +projectInfo.Id + "/users/"+ userInfo.Id + "/roles/" +roleInfo.Id,
+		URL:          "/v3/projects/" + projectInfo.Id + "/users/" + userInfo.Id + "/roles/" + roleInfo.Id,
 		Method:       http.MethodPut,
 		OkStatusCode: http.StatusNoContent,
 	})
@@ -48,4 +48,22 @@ func (c *Client) AssignRoleToUserOnProject(roleName, userName, projectName strin
 		return err
 	}
 	return nil
+}
+
+func (c *Client) ListRoles() ([]ResRole, error) {
+	resp, err := c.DoRequest(KeyRequest{
+		URL:          "/v3/roles",
+		Method:       http.MethodGet,
+		OkStatusCode: http.StatusOK,
+	})
+	if err != nil {
+		return nil, err
+	}
+	var resRolesBody ResRolesBody
+	err = json.Unmarshal(resp.Body, &resRolesBody)
+
+	if err != nil {
+		return nil, err
+	}
+	return resRolesBody.Roles, nil
 }

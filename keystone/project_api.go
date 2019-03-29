@@ -89,3 +89,23 @@ func (c *Client) CreateProject(userName, projectName string) error {
 	}
 	return nil
 }
+
+func (c *Client) DeleteProject(userName, projectName string) error {
+	err := c.UnassignRoleToUserOnProject("admin", userName, projectName)
+	if err != nil {
+		return err
+	}
+	projectInfo, err := c.GetProjectByName(projectName)
+	if err != nil {
+		return err
+	}
+	_, err = c.DoRequest(KeyRequest{
+		URL:          "/v3/projects/" + projectInfo.Id,
+		Method:       http.MethodDelete,
+		OkStatusCode: http.StatusNoContent,
+	})
+	if err != nil {
+		return err
+	}
+	return nil
+}

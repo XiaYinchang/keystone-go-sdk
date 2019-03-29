@@ -78,10 +78,34 @@ func (c *Client) CreateUser(name, password string) error {
 		OkStatusCode: http.StatusCreated,
 		Body:         bodyByteArray,
 	})
-
 	if err != nil {
 		return err
 	}
-	c.CreateProject(name, name+"origin")
+	return nil
+}
+
+func (c *Client) DeleteUser(name string) error {
+	userInfo, err := c.GetUserByName(name)
+	if err != nil {
+		return err
+	}
+	userProjects, err := c.UserProjects(userInfo.Id)
+	if err != nil {
+		return err
+	}
+	for _, project := range userProjects.Projects {
+		err = c.DeleteProject(name, project.Name)
+		if err != nil {
+			return err
+		}
+	}
+	_, err = c.DoRequest(KeyRequest{
+		URL:          "/v3/users/" + userInfo.Id,
+		Method:       http.MethodDelete,
+		OkStatusCode: http.StatusNoContent,
+	})
+	if err != nil {
+		return err
+	}
 	return nil
 }

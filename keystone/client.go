@@ -25,7 +25,7 @@ func NewClient(authInfo *KeystoneAuth) (*Client, error) {
 	}
 	token, userid, err := client.Tokens(auth)
 	if err != nil {
-		return nil, fmt.Errorf("get token error")
+		return nil, err
 	}
 	client.AuthInfo.Token = token
 	client.AuthInfo.UserId = userid

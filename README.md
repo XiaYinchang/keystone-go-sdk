@@ -14,7 +14,7 @@ Install using `go get github.com/XiaYinchang/keystone-go-sdk`.
 import "github.com/XiaYinchang/keystone-go-sdk/keystone"
 
 // create new client
-authInfo := keystone.KeystoneAuth {
+authInfo := &keystone.KeystoneAuth {
     AuthURL:     "http://192.168.56.101:5000",
 	APIVersion:  "v3",
 	DomainName:  "Default",
